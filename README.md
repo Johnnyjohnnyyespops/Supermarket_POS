@@ -25,54 +25,6 @@ Build a terminal-based supermarket POS system that allows a cashier to:
 
 ---
 
-# 📚 Java Restrictions
-
-This project should use **basic Java only**.
-
-## Allowed
-
-* Variables
-* Primitive data types
-* Strings
-* Arithmetic operators
-* `Scanner`
-* `System.out`
-* `if / else`
-* `switch`
-* `for`
-* `while`
-* `do-while`
-* Methods
-* Arrays
-* `ArrayList`
-* Basic exception handling if necessary
-
-## Not Allowed
-
-* ❌ Multiple classes
-* ❌ OOP
-* ❌ Custom objects
-* ❌ Constructors
-* ❌ Inheritance
-* ❌ Polymorphism
-* ❌ Encapsulation
-* ❌ Databases
-* ❌ GUI
-* ❌ Frameworks
-* ❌ APIs
-* ❌ Streams
-* ❌ Lambdas
-* ❌ Design patterns
-* ❌ External libraries
-
-### Main Rule
-
-**The entire POS system must be contained within one Java class.**
-
-Methods may be created to organize the program, but no additional classes should be created.
-
----
-
 # 🗺️ Development Roadmap
 
 ## Phase 0 — Planning
