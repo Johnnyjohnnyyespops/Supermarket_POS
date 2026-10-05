@@ -1,10 +1,6 @@
 # 🛒 Supermarket POS System
 
-A beginner Java **Point-of-Sale (POS) System** built entirely inside a **single Java class**.
-
-The purpose of this project is to practice Java fundamentals by building a functional supermarket checkout system without using Object-Oriented Programming.
-
----
+## Lozano - Lascano
 
 # 🎯 Project Goal
 
