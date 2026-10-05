@@ -1,11 +1,14 @@
 import java.util.*;
 
 public class Main {
-    static ArrayList<String> id = new ArrayList<>();
-    static ArrayList<String> name = new ArrayList<>();
-    static ArrayList<Double> price = new ArrayList<>();
-    static ArrayList<String> category = new ArrayList<>();
-    static ArrayList<Integer> stock_quantity = new ArrayList<>();
+    static ArrayList<Integer> id = new ArrayList<>(List.of(101, 102, 103, 104, 105, 106, 107, 108));
+    static ArrayList<String> name = new ArrayList<>(List.of(
+            "Jasmine Rice 5kg", "Fresh Milk 1L", "White Bread",
+            "Canned Sardines", "Instant Noodles", "Cooking Oil 1L",
+            "Laundry Detergent 1kg", "Bottled Water 1L"));
+    static ArrayList<Double> price = new ArrayList<>(List.of(285.00, 95.00, 65.00, 32.00, 18.00, 85.00, 110.00, 25.00));
+
+    static ArrayList<Integer> stock_quantity = new ArrayList<>(List.of(50, 30, 40, 60, 100, 35, 25, 80));
 
     public static void main(String[] args) {
         menu();
