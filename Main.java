@@ -2,25 +2,22 @@ import java.util.*;
 
 public class Main {
 
-    // Pre loaded stock
+    // Pre loaded Inventory
     static ArrayList<Integer> id = new ArrayList<>(List.of(101, 102, 103, 104, 105, 106, 107, 108));
     static ArrayList<String> name = new ArrayList<>(List.of(
             "Jasmine Rice 5kg", "Fresh Milk 1L", "White Bread",
             "Canned Sardines", "Instant Noodles", "Cooking Oil 1L",
             "Laundry Detergent 1kg", "Bottled Water 1L"));
     static ArrayList<Double> price = new ArrayList<>(List.of(285.00, 95.00, 65.00, 32.00, 18.00, 85.00, 110.00, 25.00));
-
     static ArrayList<Integer> stock_quantity = new ArrayList<>(List.of(50, 30, 40, 60, 100, 35, 25, 80));
 
-    // ETO UNG MAIN METHOD PARE!
-    public static void main(String[] args) {
-        menu();
-        product_Display();
+    static Scanner sc = new Scanner(System.in);
 
+    public static void main(String[] args) { // ETO UNG MAIN METHOD PARE!
+        menu();
     }
 
-    // DISPLAYS THE MENU
-    static void menu() {
+    static void menu() { // DISPLAYS THE MENU
         // ETO YUNG IDDISPLAY SA MAIN MENU
         System.out.println("====================================");
         System.out.println("            SUPER MARIKET           ");
@@ -32,12 +29,28 @@ public class Main {
         System.out.println("[5] View Inventory");
         System.out.println("[6] Exit");
 
+        System.out.print("Enter choice: ");
+        int choice = sc.nextInt();
+
+        switch (choice) {
+            case 1:
+                product_Display();
+                break;
+
+            default:
+                break;
+        }
+
     }
 
-    // Displays the products information in a table format
-    static void product_Display() {
+    public static void clearConsole() { // This clears the terminal
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 
+    static void product_Display() { // Displays the products information in a table format
         // Dinidisplay nya yung mga items in a table format
+        clearConsole();
         System.out.println("===============================================================");
         System.out.println("||                        STOCK LIST                         ||");
         System.out.println("===============================================================");
@@ -48,7 +61,7 @@ public class Main {
         System.out.println("---------------------------------------------------------------");
 
         for (int i = 0; i < id.size(); i++) {
-            System.out.printf("| %-5s | %-25s | ₱%-10.2f | %-10d |%n",
+            System.out.printf("| %-5s | %-25s | ₱%-10.2f | %-9d |%n",
                     id.get(i),
                     name.get(i),
                     price.get(i),
@@ -56,67 +69,5 @@ public class Main {
         }
         System.out.println("---------------------------------------------------------------");
     }
-
-    /*
-     * product inventory :
-     * Product id
-     * product name
-     * category
-     * price
-     * stock quantity
-     * 
-     * product display:
-     * View all products
-     * Show price and available stock
-     * identify out-of-stock products
-     * 
-     * shopping cart:
-     * add product
-     * choose quantity
-     * View cart
-     * calculate each item subtotal
-     * remove/cahnge items if you want
-     * 
-     * Checkout:
-     * Calculate total
-     * Optional discount
-     * Optional tax
-     * final amount
-     * 
-     * Payment:
-     * Enter cash/payment
-     * Check if payment is enough
-     * Calculate change
-     * 
-     * Receipt:
-     * Transaction number
-     * Products
-     * Quantity
-     * Price
-     * Subtotal
-     * Total
-     * Payment
-     * Change
-     * 
-     * Inventory Update:
-     * Subtract purchased quantity from stock
-     * Prevent buying more than available stock
-     * Prevent purchasing out-of-stock products
-     * 
-     * Multiple Customers:
-     * Finish transaction
-     * Clear cart
-     * Start a new transaction
-     * Keep inventory changes
-     * 
-     * Input Validation:
-     * Invalid product ID
-     * Invalid menu choice
-     * Invalid quantity
-     * Insufficient payment
-     * Empty cart
-     * Negative/zero quantities
-     * 
-     */
 
 }
