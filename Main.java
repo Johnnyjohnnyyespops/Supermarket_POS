@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class Main {
+
+    // Pre loaded stock
     static ArrayList<Integer> id = new ArrayList<>(List.of(101, 102, 103, 104, 105, 106, 107, 108));
     static ArrayList<String> name = new ArrayList<>(List.of(
             "Jasmine Rice 5kg", "Fresh Milk 1L", "White Bread",
@@ -10,11 +12,14 @@ public class Main {
 
     static ArrayList<Integer> stock_quantity = new ArrayList<>(List.of(50, 30, 40, 60, 100, 35, 25, 80));
 
+    // ETO UNG MAIN METHOD PARE!
     public static void main(String[] args) {
         menu();
+        product_Display();
 
     }
 
+    // DISPLAYS THE MENU
     static void menu() {
         // ETO YUNG IDDISPLAY SA MAIN MENU
         System.out.println("====================================");
@@ -29,8 +34,27 @@ public class Main {
 
     }
 
+    // Displays the products information in a table format
     static void product_Display() {
 
+        // Dinidisplay nya yung mga items in a table format
+        System.out.println("===============================================================");
+        System.out.println("||                        STOCK LIST                         ||");
+        System.out.println("===============================================================");
+
+        System.out.printf("|| %-4s | %-25s | %-10s | %-9s ||%n",
+                "ID", "NAME", "PRICE", "STOCK");
+
+        System.out.println("---------------------------------------------------------------");
+
+        for (int i = 0; i < id.size(); i++) {
+            System.out.printf("| %-5s | %-25s | ₱%-10.2f | %-10d |%n",
+                    id.get(i),
+                    name.get(i),
+                    price.get(i),
+                    stock_quantity.get(i));
+        }
+        System.out.println("---------------------------------------------------------------");
     }
 
     /*
