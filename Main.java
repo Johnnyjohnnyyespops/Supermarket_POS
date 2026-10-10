@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Main {
 
     private static final ArrayList<Integer> ID = new ArrayList<>(
@@ -50,19 +53,22 @@ public class Main {
                 case 4:
                     checkout();
                     break;
-                case 6:
+                case 5:
                     System.out.println("Thank you for shopping!");
                     break;
                 default:
                     System.out.println("Invalid choice.");
             }
 
-        } while (choice != 6);
+        } while (choice != 5);
 
         SCANNER.close();
     }
 
     private static void displayMainMenu() {
+        System.out.println();
+
+        System.out.println();
         System.out.println("\n====================================");
         System.out.println("            SUPER MARIKET           ");
         System.out.println("====================================");
@@ -82,6 +88,8 @@ public class Main {
     private static void displayProducts() {
         clearConsole();
 
+        System.out.println();
+        System.out.println();
         System.out.println("===============================================================");
         System.out.println("||                        STOCK LIST                         ||");
         System.out.println("===============================================================");
@@ -121,6 +129,9 @@ public class Main {
     }
 
     private static void displayCart() {
+
+        System.out.println();
+        System.out.println();
         System.out.println("\n================ SHOPPING CART ================");
 
         System.out.printf(
@@ -383,13 +394,59 @@ public class Main {
                             - CART_QUANTITY.get(i));
         }
 
-        System.out.println("\n================ RECEIPT ================");
-        displayCart();
-        System.out.printf("Payment: ₱%.2f%n", payment);
-        System.out.printf("Change:  ₱%.2f%n", payment - total);
-        System.out.println("==========================================");
-        System.out.println("Purchase successful. Thank you!");
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        printReceipt(payment);
+
+    }
+
+    static void printReceipt(double payment) {
+
+        double total = calculateTotal();
+        double change = payment - total;
+
+        LocalDateTime now = LocalDateTime.now();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy             hh:mm a");
+
+        String dateTime = now.format(formatter);
+
+        System.out.println("\n==============================================");
+        System.out.println("                 SUPER MARIKET");
+        System.out.println("               OFFICIAL RECEIPT");
+        System.out.println("==============================================");
+
+        System.out.println("Date & Time: " + dateTime);
+        System.out.println("---------------------------------------------");
+        System.out.printf("%-18s %5s %8s %9s%n",
+                "PRODUCT", "QTY", "PRICE", "SUBTOTAL");
+
+        System.out.println("----------------------------------------------");
+
+        for (int i = 0; i < CART_PRODUCT.size(); i++) {
+
+            String product = CART_PRODUCT.get(i);
+            int quantity = CART_QUANTITY.get(i);
+            double price = CART_PRICE.get(i);
+            double subtotal = quantity * price;
+
+            System.out.printf("%-18s %5d %8.2f %9.2f%n",
+                    product, quantity, price, subtotal);
+        }
+
+        System.out.println("----------------------------------------------");
+        System.out.printf("%-32s ₱%10.2f%n", "TOTAL:", total);
+        System.out.printf("%-32s ₱%10.2f%n", "AMOUNT PAID:", payment);
+        System.out.printf("%-32s ₱%10.2f%n", "CHANGE:", change);
+
+        System.out.println("==============================================");
+        System.out.println("          Thank you for shopping!");
+        System.out.println("             Please come again.");
+        System.out.println("==============================================");
 
         clearCart();
     }
+
 }
