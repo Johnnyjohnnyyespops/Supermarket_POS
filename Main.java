@@ -134,7 +134,6 @@ public class Main {
 
     static void cart() { // THE ACTUAL CART
         int choice = 0;
-        int items = 0;
 
         do {
             System.out.println("\n================ SHOPPING CART ================");
@@ -184,14 +183,16 @@ public class Main {
 
     // HOW THE CART BEHAVES
     static void cart_functions(int choice) {
+
         switch (choice) {
             case 1:
                 System.out.print("Enter product ID: ");
                 int productID = sc.nextInt();
+                int index = id.indexOf(productID);
                 sc.nextLine();
 
                 if (id.contains(productID)) {
-                    int index = id.indexOf(productID);
+
                     cartProduct.add(productName.get(index));
                     cartPrice.add(price.get(index));
 
@@ -200,10 +201,35 @@ public class Main {
 
                     cartQuantity.add(quantity);
                     System.out.println("Product added successfully!");
+
                 } else {
                     System.out.println("Invalid Product");
                 }
                 break;
+
+            case 2:
+                System.out.print("Enter product ID: ");
+                int productID2 = sc.nextInt();
+                sc.nextLine();
+                System.out.print("Enter the quantity of item to remove (type 'all' to remove empty cart): ");
+                String num = sc.nextLine();
+                int num_of_item = Integer.parseInt(num);
+                sc.nextLine();
+                int index2 = id.indexOf(productID2);
+
+                if (num.toLowerCase().equals("all")) {
+                    cartPrice.clear();
+                    cartProduct.clear();
+                    cartQuantity.clear();
+                    System.out.println("Cart emptied");
+                } else if (cartQuantity.get(index2) >= num_of_item) {
+                    cartQuantity.set(index2, (cartQuantity.get(index2) - item_removed));
+                    System.out.println("Succesfully removed.");
+                } else if (cartQuantity.get(index2) <= num_of_item) {
+                    System.out.println("Error: You want to remove more than you have");
+                } else {
+                    System.out.println("Invalid input.");
+                }
 
             default:
                 break;
