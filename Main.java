@@ -1,13 +1,13 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
-    // Pre loaded Inventory
-
-    static ArrayList<Integer> id = new ArrayList<>(
+    private static final ArrayList<Integer> ID = new ArrayList<>(
             List.of(101, 102, 103, 104, 105, 106, 107, 108));
 
-    static ArrayList<String> productName = new ArrayList<>(
+    private static final ArrayList<String> PRODUCT_NAME = new ArrayList<>(
             List.of(
                     "Jasmine Rice 5kg",
                     "Fresh Milk 1L",
@@ -18,49 +18,30 @@ public class Main {
                     "Laundry Detergent 1kg",
                     "Bottled Water 1L"));
 
-    static ArrayList<Double> price = new ArrayList<>(
+    private static final ArrayList<Double> PRICE = new ArrayList<>(
             List.of(285.00, 95.00, 65.00, 32.00, 18.00, 85.00, 110.00, 25.00));
 
-    static ArrayList<Integer> stock_quantity = new ArrayList<>(
+    private static final ArrayList<Integer> STOCK_QUANTITY = new ArrayList<>(
             List.of(50, 30, 40, 60, 100, 35, 25, 80));
 
-    // CART
+    private static final ArrayList<String> CART_PRODUCT = new ArrayList<>();
+    private static final ArrayList<Integer> CART_QUANTITY = new ArrayList<>();
+    private static final ArrayList<Double> CART_PRICE = new ArrayList<>();
 
-    static ArrayList<String> cartProduct = new ArrayList<>();
-    static ArrayList<Integer> cartQuantity = new ArrayList<>();
-    static ArrayList<Double> cartPrice = new ArrayList<>();
-
-    static Scanner sc = new Scanner(System.in);
+    private static final Scanner SCANNER = new Scanner(System.in);
 
     public static void main(String[] args) {
-
-        int choice = 0;
+        int choice;
 
         do {
-
-            // ETO UNG MAIN METHOD PARE!
-
-            System.out.println("====================================");
-            System.out.println("            SUPER MARIKET           ");
-            System.out.println("====================================");
-
-            System.out.println("[1] View products");
-            System.out.println("[2] Add to cart");
-            System.out.println("[3] View cart");
-            System.out.println("[4] Check out");
-            System.out.println("[6] Exit");
-
-            System.out.println();
-
-            System.out.print("Enter choice: ");
-            choice = sc.nextInt();
-            sc.nextLine();
+            displayMainMenu();
+            choice = SCANNER.nextInt();
+            SCANNER.nextLine();
 
             switch (choice) {
                 case 1:
-                    menu(choice);
+                    displayProducts();
                     break;
-
                 case 2:
                     cart();
                     break;
@@ -68,40 +49,28 @@ public class Main {
                     break;
             }
         } while (choice != 6);
-
     }
 
-    static void menu(int userChoice) {
+    private static void displayMainMenu() {
+        System.out.println("====================================");
+        System.out.println("            SUPER MARIKET           ");
+        System.out.println("====================================");
 
-        // DISPLAYS THE MENU
-
-        switch (userChoice) {
-
-            case 1:
-                product_Display();
-                break;
-
-            case 2:
-                cart();
-                break;
-
-            default:
-                break;
-        }
+        System.out.println("[1] View products");
+        System.out.println("[2] Add to cart");
+        System.out.println("[3] View cart");
+        System.out.println("[4] Check out");
+        System.out.println("[6] Exit");
+        System.out.println();
+        System.out.print("Enter choice: ");
     }
 
-    public static void clearConsole() {
-
-        // This clears the terminal
-
+    private static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    static void product_Display() {
-
-        // Displays the products information in a table format
-
+    private static void displayProducts() {
         clearConsole();
 
         System.out.println("===============================================================");
@@ -117,28 +86,23 @@ public class Main {
 
         System.out.println("---------------------------------------------------------------");
 
-        for (int i = 0; i < id.size(); i++) {
-
+        for (int i = 0; i < ID.size(); i++) {
             System.out.printf(
                     "| %-5s | %-25s | ₱%-10.2f | %-9d |%n",
-                    id.get(i),
-                    productName.get(i),
-                    price.get(i),
-                    stock_quantity.get(i));
+                    ID.get(i),
+                    PRODUCT_NAME.get(i),
+                    PRICE.get(i),
+                    STOCK_QUANTITY.get(i));
         }
 
         System.out.println("---------------------------------------------------------------");
     }
 
-    // Cart METHODS
-
-    static void cart() { // THE ACTUAL CART
-        int choice = 0;
-        int items = 0;
+    private static void cart() {
+        int choice;
 
         do {
             System.out.println("\n================ SHOPPING CART ================");
-
             System.out.printf(
                     "%-5s %-20s %-10s %-10s %-10s%n",
                     "No.",
@@ -151,18 +115,16 @@ public class Main {
 
             double total = 0;
 
-            for (int i = 0; i < cartProduct.size(); i++) {
-
-                double subtotal = cartPrice.get(i) * cartQuantity.get(i);
-
+            for (int i = 0; i < CART_PRODUCT.size(); i++) {
+                double subtotal = CART_PRICE.get(i) * CART_QUANTITY.get(i);
                 total += subtotal;
 
                 System.out.printf(
                         "%-5d %-20s ₱%-9.2f %-10d ₱%-10.2f%n",
                         i + 1,
-                        cartProduct.get(i),
-                        cartPrice.get(i),
-                        cartQuantity.get(i),
+                        CART_PRODUCT.get(i),
+                        CART_PRICE.get(i),
+                        CART_QUANTITY.get(i),
                         subtotal);
             }
 
@@ -174,37 +136,34 @@ public class Main {
             System.out.println("[2] Remove item");
             System.out.println("[3] Replace item");
             System.out.print("Enter choice: ");
-            choice = sc.nextInt();
+            choice = SCANNER.nextInt();
 
-            cart_functions(choice);
-
+            cartFunctions(choice);
         } while (choice != 4);
-
     }
 
-    // HOW THE CART BEHAVES
-    static void cart_functions(int choice) {
+    private static void cartFunctions(int choice) {
         switch (choice) {
             case 1:
                 System.out.print("Enter product ID: ");
-                int productID = sc.nextInt();
-                sc.nextLine();
+                int productId = SCANNER.nextInt();
+                SCANNER.nextLine();
 
-                if (id.contains(productID)) {
-                    int index = id.indexOf(productID);
-                    cartProduct.add(productName.get(index));
-                    cartPrice.add(price.get(index));
+                if (ID.contains(productId)) {
+                    int index = ID.indexOf(productId);
+                    CART_PRODUCT.add(PRODUCT_NAME.get(index));
+                    CART_PRICE.add(PRICE.get(index));
 
                     System.out.print("Enter quantity: ");
-                    int quantity = sc.nextInt();
+                    int quantity = SCANNER.nextInt();
+                    SCANNER.nextLine();
 
-                    cartQuantity.add(quantity);
+                    CART_QUANTITY.add(quantity);
                     System.out.println("Product added successfully!");
                 } else {
                     System.out.println("Invalid Product");
                 }
                 break;
-
             default:
                 break;
         }
