@@ -40,6 +40,7 @@ public class Main {
         do {
             displayMainMenu();
             choice = sc.nextInt();
+            sc.nextLine();
 
             switch (choice) {
                 case 1:
@@ -157,6 +158,7 @@ public class Main {
             System.out.print("Enter choice: ");
 
             choice = sc.nextInt();
+            sc.nextLine();
 
             if (choice >= 1 && choice <= 3) {
                 cartFunctions(choice);
@@ -195,6 +197,7 @@ public class Main {
     static void addItem() {
         System.out.print("Enter product ID: ");
         int productId = sc.nextInt();
+        sc.nextLine();
 
         int inventoryIndex = ID.indexOf(productId);
 
@@ -224,6 +227,7 @@ public class Main {
         System.out.print("Enter quantity: ");
 
         int quantity = sc.nextInt();
+        sc.nextLine();
 
         if (quantity <= 0 || quantity > availableStock) {
             System.out.println("Invalid quantity or insufficient stock.");
@@ -251,6 +255,7 @@ public class Main {
 
         System.out.print("Enter product ID to remove: ");
         int productId = sc.nextInt();
+        sc.nextLine();
 
         int inventoryIndex = ID.indexOf(productId);
 
@@ -269,6 +274,7 @@ public class Main {
 
         System.out.print("Enter quantity to remove (0 = cancel, -1 = all): ");
         int quantity = sc.nextInt();
+        sc.nextLine();
 
         if (quantity == -1) {
             cart_product.remove(cartIndex);
@@ -306,6 +312,7 @@ public class Main {
 
         System.out.print("Enter product ID: ");
         int productId = sc.nextInt();
+        sc.nextLine();
 
         int inventoryIndex = ID.indexOf(productId);
 
@@ -327,6 +334,7 @@ public class Main {
 
         System.out.print("Enter new quantity (0 = remove item): ");
         int newQuantity = sc.nextInt();
+        sc.nextLine();
 
         int otherCartQuantity = 0;
 
@@ -365,36 +373,128 @@ public class Main {
         }
 
         displayCart();
-        double total = calculateTotal();
+        checkpayment();
+    }
 
-        System.out.print("Enter payment amount: ₱");
-        double payment = sc.nextDouble();
+    // Check for payment method and discounts
+    static void checkpayment() {
+        boolean hasDiscount = false;
+        double total = calculateTotal();
+        double payment;
+
+        System.out.print("Enter payment method (C = Cash) (CC = Credit Card): ");
+        String paymentmethod = sc.nextLine().trim();
+
+        if (paymentmethod.toUpperCase().equals("C")) {
+            System.out.print("Enter payment amount: ₱");
+            payment = sc.nextDouble();
+            sc.nextLine();
+        } else if (paymentmethod.toUpperCase().equals("CC")) {
+            boolean validCard = creditCardPayment();
+
+            if (validCard) {
+                System.out.print("Enter payment amount: ₱");
+                payment = sc.nextDouble();
+                sc.nextLine();
+            } else {
+                return;
+            }
+
+        } else {
+            System.out.println("Invalid payment method.");
+            return;
+        }
+
+        System.out.print("Discount (PWD = P) (SENIOR = S) (Enter N if none): ");
+        String discount = sc.nextLine().trim();
+
+        if (discount.equals("P") || discount.equals("S")) {
+            hasDiscount = true;
+            total = calculateTotal() * 0.75;
+            System.out.println("Discount added.");
+        } else if (discount.equals("N")) {
+            hasDiscount = false;
+        } else {
+            System.out.println("Invalid discount. Try again.");
+            return;
+        }
 
         if (payment < total) {
-            System.out.printf("Insufficient payment. You need ₱" + (total - payment) + " more.");
+            System.out.printf("Insufficient payment. You need ₱%.2f more.%n", total - payment);
+            return;
         }
 
         // Deducts the purchased stock from the inventory
         for (int i = 0; i < cart_product.size(); i++) {
 
             int inventoryIndex = PRODUCT_NAME.indexOf(cart_product.get(i));
-            cart_quantity.set(inventoryIndex, STOCK_QUANTITY.get(inventoryIndex) - cart_quantity.get(i));
+            STOCK_QUANTITY.set(inventoryIndex, STOCK_QUANTITY.get(inventoryIndex) - cart_quantity.get(i));
 
         }
         System.out.println();
         System.out.println();
         System.out.println();
 
-        printReceipt(payment);
+        printReceipt(payment, hasDiscount);
     }
 
-    static void printReceipt(double payment) { // How the receipt is printed
+    // Credit card
+    static boolean creditCardPayment() {
 
-        double total = calculateTotal();
-        double change = payment - total;
+        System.out.println("Kindly follow this format: xxxx-xxxx-xxxx-xxxx");
+        System.out.print("Enter credit card number: ");
+        String creditcard = sc.nextLine().trim();
+
+        boolean validCardNumber = true;
+
+        if (creditcard.length() != 19) {
+            // check length
+            validCardNumber = false;
+
+        } else {
+            // check format
+            if (!creditcard.substring(4, 5).equals("-") || !creditcard.substring(9, 10).equals("-")
+                    || !creditcard.substring(14, 15).equals("-")) {
+                validCardNumber = false;
+            }
+        }
+
+        // Check if the characters are valid
+        for (int i = 0; i < creditcard.length(); i++) {
+            if (i == 4 || i == 9 || i == 14) {
+                continue;
+            }
+            if (!Character.isDigit(creditcard.charAt(i))) {
+                validCardNumber = false;
+                break;
+            }
+        }
+
+        if (validCardNumber) {
+            System.out.println("Credit card number accepted.");
+            return true;
+        } else {
+            System.out.println("Invalid credit card number.");
+            return false;
+        }
+    }
+
+    static void printReceipt(double payment, boolean hasDiscount) {
+
+        double subtotal = calculateTotal();
+        double total;
+        double change;
+
+        if (hasDiscount) {
+            total = subtotal * 0.75; // 25% discount
+        } else {
+            total = subtotal;
+        }
+
+        change = payment - total;
 
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy             hh:mm a");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
         String dateTime = now.format(formatter);
 
         System.out.println("\n==============================================");
@@ -403,8 +503,9 @@ public class Main {
         System.out.println("==============================================");
 
         System.out.println("Date & Time: " + dateTime);
-        System.out.println("---------------------------------------------");
-        System.out.printf("%-18s %5s %8s %9s%n", "PRODUCT", "QTY", "PRICE", "SUBTOTAL");
+        System.out.println("----------------------------------------------");
+        System.out.printf("%-18s %5s %8s %9s%n",
+                "PRODUCT", "QTY", "PRICE", "SUBTOTAL");
         System.out.println("----------------------------------------------");
 
         for (int i = 0; i < cart_product.size(); i++) {
@@ -412,12 +513,20 @@ public class Main {
             String product = cart_product.get(i);
             int quantity = cart_quantity.get(i);
             double price = cart_price.get(i);
-            double subtotal = quantity * price;
+            double itemSubtotal = quantity * price;
 
             System.out.printf("%-18s %5d %8.2f %9.2f%n",
-                    product, quantity, price, subtotal);
+                    product, quantity, price, itemSubtotal);
         }
+
         System.out.println("----------------------------------------------");
+        System.out.printf("%-32s ₱%10.2f%n", "SUBTOTAL:", subtotal);
+
+        if (hasDiscount) {
+            System.out.printf("%-32s ₱%10.2f%n",
+                    "DISCOUNT (25%):", subtotal * 0.25);
+        }
+
         System.out.printf("%-32s ₱%10.2f%n", "TOTAL:", total);
         System.out.printf("%-32s ₱%10.2f%n", "AMOUNT PAID:", payment);
         System.out.printf("%-32s ₱%10.2f%n", "CHANGE:", change);
@@ -426,8 +535,8 @@ public class Main {
         System.out.println("          Thank you for shopping!");
         System.out.println("             Please come again.");
         System.out.println("==============================================");
-        clearCart();
 
+        clearCart();
     }
 
 }
