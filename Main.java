@@ -377,13 +377,15 @@ public class Main {
     }
 
     // Check for payment method and discounts
+
     static void checkpayment() {
         boolean hasDiscount = false;
         double total = calculateTotal();
         double payment;
+        String input;
 
         System.out.print("Discount (PWD = P) (SENIOR = S) (Enter N if none): ");
-        String discount = sc.nextLine().trim();
+        String discount = sc.nextLine().trim().toUpperCase();
 
         if (discount.equals("P") || discount.equals("S")) {
             hasDiscount = true;
@@ -399,17 +401,40 @@ public class Main {
         System.out.print("Enter payment method (C = Cash) (CC = Credit Card): ");
         String paymentmethod = sc.nextLine().trim();
 
-        if (paymentmethod.toUpperCase().equals("C")) {
+        if (paymentmethod.equalsIgnoreCase("C")) {
             System.out.print("Enter payment amount: ₱");
-            payment = sc.nextDouble();
-            sc.nextLine();
-        } else if (paymentmethod.toUpperCase().equals("CC")) {
+            input = sc.nextLine().trim();
+
+            if (input.matches("-?\\d+(\\.\\d+)?")) {
+                payment = Double.parseDouble(input);
+
+                if (payment < 0) {
+                    System.out.println("Payment cannot be negative.");
+                    return;
+                }
+            } else {
+                System.out.println("Invalid payment amount.");
+                return;
+            }
+
+        } else if (paymentmethod.equalsIgnoreCase("CC")) {
             boolean validCard = creditCardPayment();
 
             if (validCard) {
                 System.out.print("Enter payment amount: ₱");
-                payment = sc.nextDouble();
-                sc.nextLine();
+                input = sc.nextLine().trim();
+
+                if (input.matches("-?\\d+(\\.\\d+)?")) {
+                    payment = Double.parseDouble(input);
+
+                    if (payment < 0) {
+                        System.out.println("Payment cannot be negative.");
+                        return;
+                    }
+                } else {
+                    System.out.println("Invalid payment amount.");
+                    return;
+                }
             } else {
                 return;
             }
@@ -424,17 +449,18 @@ public class Main {
             return;
         }
 
-        // Deducts the purchased stock from the inventory
+        // Deduct purchased stock from inventory
         for (int i = 0; i < cart_product.size(); i++) {
-
             int inventoryIndex = PRODUCT_NAME.indexOf(cart_product.get(i));
-            STOCK_QUANTITY.set(inventoryIndex, STOCK_QUANTITY.get(inventoryIndex) - cart_quantity.get(i));
 
+            STOCK_QUANTITY.set(
+                    inventoryIndex,
+                    STOCK_QUANTITY.get(inventoryIndex) - cart_quantity.get(i));
         }
-        System.out.println();
-        System.out.println();
-        System.out.println();
 
+        System.out.println();
+        System.out.println();
+        System.out.println();
         printReceipt(payment, hasDiscount);
     }
 
