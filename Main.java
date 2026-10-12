@@ -382,6 +382,20 @@ public class Main {
         double total = calculateTotal();
         double payment;
 
+        System.out.print("Discount (PWD = P) (SENIOR = S) (Enter N if none): ");
+        String discount = sc.nextLine().trim();
+
+        if (discount.equals("P") || discount.equals("S")) {
+            hasDiscount = true;
+            total = calculateTotal() * 0.75;
+            System.out.println("Discount added.");
+        } else if (discount.equals("N")) {
+            hasDiscount = false;
+        } else {
+            System.out.println("Invalid discount. Try again.");
+            return;
+        }
+
         System.out.print("Enter payment method (C = Cash) (CC = Credit Card): ");
         String paymentmethod = sc.nextLine().trim();
 
@@ -402,20 +416,6 @@ public class Main {
 
         } else {
             System.out.println("Invalid payment method.");
-            return;
-        }
-
-        System.out.print("Discount (PWD = P) (SENIOR = S) (Enter N if none): ");
-        String discount = sc.nextLine().trim();
-
-        if (discount.equals("P") || discount.equals("S")) {
-            hasDiscount = true;
-            total = calculateTotal() * 0.75;
-            System.out.println("Discount added.");
-        } else if (discount.equals("N")) {
-            hasDiscount = false;
-        } else {
-            System.out.println("Invalid discount. Try again.");
             return;
         }
 
