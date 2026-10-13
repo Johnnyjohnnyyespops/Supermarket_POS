@@ -66,7 +66,8 @@ public class Main {
         sc.close();
     }
 
-    static void displayMainMenu() { // Responsible for displayiing the main menu choices
+     // Responsible for displayiing the main menu choices
+    static void displayMainMenu() {
         System.out.println();
 
         System.out.println();
@@ -81,12 +82,14 @@ public class Main {
         System.out.print("Enter choice: ");
     }
 
-    static void clearConsole() { // clears the console
+    // clears the console
+    static void clearConsole() { 
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
-    static void displayProducts() { // Displays the stocks, quantities, prices, and id of products in a table format
+     // Displays the stocks, quantities, prices, and id of products in a table format
+    static void displayProducts() {
         clearConsole();
 
         System.out.println();
@@ -106,8 +109,9 @@ public class Main {
         }
         System.out.println("---------------------------------------------------------------");
     }
-
-    static double calculateTotal() { // Calculates the total amount to be paid
+    
+    // Calculates the total amount to be paid
+    static double calculateTotal() {
         double total = 0;
 
         for (int i = 0; i < cart_product.size(); i++) {
@@ -117,7 +121,8 @@ public class Main {
         return total;
     }
 
-    static void displayCart() { // This displays whats inside the cart
+    // This displays whats inside the cart
+    static void displayCart() { 
 
         System.out.println();
         System.out.println();
@@ -145,6 +150,7 @@ public class Main {
         System.out.println("---------------------------------------------------------------");
     }
 
+    // Cart menu
     static void cart() {
         int choice;
 
@@ -185,15 +191,16 @@ public class Main {
         }
     }
 
-    // Methods that we used inside the cart
-
-    static void clearCart() { // Empties the cart
+//METHODS THAT WE USED INSIDE THE CART
+    
+     // Empties the cart
+    static void clearCart() {
         cart_product.clear();
         cart_quantity.clear();
         cart_price.clear();
     }
 
-    // Adding item
+    // Adding item inside the cart
     static void addItem() {
         System.out.print("Enter product ID: ");
         int productId = sc.nextInt();
@@ -246,7 +253,7 @@ public class Main {
         System.out.println("Product successfully added!");
     }
 
-    // Removing an item
+    // Removing an item inside the cart
     static void removeItem() {
         if (cart_product.isEmpty()) {
             System.out.println("Your cart is empty.");
@@ -365,7 +372,9 @@ public class Main {
         }
     }
 
-    // CHECKOUT METHOD
+//METHODS THAT WE USED INSIDE THE CHECKOUT
+    
+    // CHECKOUT MENU
     static void checkout() {
         if (cart_product.isEmpty()) {
             System.out.println("Cannot check out. Your cart is empty.");
@@ -377,7 +386,6 @@ public class Main {
     }
 
     // Check for payment method and discounts
-
     static void checkpayment() {
         boolean hasDiscount = false;
         double total = calculateTotal();
@@ -464,7 +472,7 @@ public class Main {
         printReceipt(payment, hasDiscount);
     }
 
-    // Credit card
+    // Checks if the credit card is valid
     static boolean creditCardPayment() {
 
         System.out.println("Kindly follow this format: xxxx-xxxx-xxxx-xxxx");
@@ -505,6 +513,7 @@ public class Main {
         }
     }
 
+    //Prints the receipt
     static void printReceipt(double payment, boolean hasDiscount) {
 
         double subtotal = calculateTotal();
